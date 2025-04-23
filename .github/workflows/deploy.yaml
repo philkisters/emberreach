@@ -37,4 +37,4 @@ jobs:
 
       - name: Restart App (PM2)
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "pm2 reload emberreach || pm2 start /var/www/emberreach/.output/server/index.mjs --name emberreach"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "pm2 reload emberreach || pm2 start /var/www/emberreach/server/index.mjs --name emberreach"
