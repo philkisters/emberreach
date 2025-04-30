@@ -1,4 +1,4 @@
-import { prisma } from '../../utils/prisma'
+import { prisma } from '~~/server/utils/prisma'
 import { setCookie } from 'h3'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
