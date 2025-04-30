@@ -13,17 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Project
-        run: npm run build
-
       - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
@@ -31,10 +20,17 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy
+      - name: Create .env file
         run: |
-          rsync -avz --delete .output/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/emberreach
+          echo "DB_USER=${{ secrets.DB_USER }}" > .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
-      - name: Restart App (PM2)
+      - name: Sync files to server
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "~/pm2-deploy.sh reload emberreach || ~/pm2-deploy.sh start /var/www/emberreach/server/index.mjs --name emberreach -- --hostname 0.0.0.0 --port 3000"
+          rsync -avz --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/emberreach
+
+      - name: Start App via Docker Compose
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /var/www/emberreach && docker-compose down && docker-compose up --build -d'
