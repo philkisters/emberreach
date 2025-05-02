@@ -11,7 +11,7 @@
         <div>1 hour</div>
       </div>
     </div>
-    <div v-if="add" class="rounded-full bg-amber-900 w-16 h-16 content-center text-center">
+    <div v-if="add" class="rounded-full bg-amber-900 w-16 h-16 content-center text-center" @click="emit('create')">
       <UIcon name="i-lucide-plus" class="size-7" />
     </div>
     <div v-if="locked" class="rounded-full bg-amber-900 w-16 h-16 content-center text-center">
@@ -29,6 +29,7 @@ const props = defineProps<{
 }>()
 
 const { character, add, locked } = props;
+const emit = defineEmits(['create'])
 
 </script>
 
