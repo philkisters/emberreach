@@ -34,4 +34,4 @@ jobs:
 
       - name: Start App via Docker Compose
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /var/www/emberreach && docker-compose down && docker-compose up --build -d'
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /var/www/emberreach && docker compose down && docker compose up --build -d'
