@@ -7,4 +7,4 @@ done
 
 npx prisma migrate deploy
 
-node .output/server/index.mjs
+node .output/server/index.mjs --hostname 0.0.0.0 --port 3000
