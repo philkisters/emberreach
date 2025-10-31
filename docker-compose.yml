@@ -15,16 +15,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
-      NODE_ENV: development
+      NODE_ENV: production
+      VIRTUAL_HOST: emberreach.kisters.me
+      LETSENCRYPT_HOST: emberreach.kisters.me
+      LETSENCRYPT_EMAIL: philipp@kisters.me
+      VIRTUAL_PORT: 3000
+    expose:
+      - "3000"
     networks:
       - emberreach-network
+      - web
 
 volumes:
   postgres-data:
@@ -32,3 +38,5 @@ volumes:
 networks:
   emberreach-network:
     driver: bridge
+  web:
+    external: true
