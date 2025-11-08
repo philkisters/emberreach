@@ -24,6 +24,6 @@ export default defineEventHandler(async (event) => {
       }
     }
   } catch (error) {
-    // Ungültiges Token, nichts tun
+    console.error("The following error occured while verifying the JWT Token: ", error)
   }
 })

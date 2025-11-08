@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col items-center justify-center gap-4 h-screen">
     
-    <img src="/icon.png" class="w-32 h-32" />
+    <img src="/icon.png" class="w-32 h-32">
 
-    <h1 class="font-bold text-2xl text-(--ui-primary)">
+    <h1 class="font-bold text-2xl text-primary)">
       Tales of Emberreach
     </h1>
     <p v-if="success" class="text-amber-500">Registration successful, let's login!</p>
@@ -15,38 +15,38 @@
     <div class="flex items-center gap-2">
       
       <UButton
+        v-if="!createAccount"
         label="Login"
         icon="i-lucide-pickaxe"
         class="grow"
-        v-if="!createAccount"
         @click="onLogin"
       />
 
       <UButton
+        v-if="createAccount"
         color="neutral"
         variant="outline"
         icon="i-lucide-arrow-left"
         class="grow"
-        v-if="createAccount"
         @click="createAccount = false"
       />
 
       <UButton
+        v-if="!createAccount && !success"
         label="Register"
         color="neutral"
         variant="outline"
         icon="i-lucide-swords"
         class="grow"
-        v-if="!createAccount && !success"
         @click="createAccount = true"
       />
 
       <UButton
+        v-if="createAccount"
         label="Create Account"
         color="primary"
         icon="i-lucide-swords"
         class="grow"
-        v-if="createAccount"
         @click="onRegister"
       />
     </div>
