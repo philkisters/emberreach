@@ -5,7 +5,10 @@
     </div>
     <div v-if="character" class="flex flex-col ml-4">
       <div>{{ character.name }}</div>
-      <div>{{ character.settlementName ?? 'No settlement' }}</div>
+      <div v-if="character.settlementName">{{ character.settlementName }}</div>
+      <div v-else>
+        <UButton size="sm" color="secondary" @click="setSettlement">Set Settlement</UButton>
+      </div>
       <div class="flex flex-row justify-between">
         <div>Activity</div>
         <div>1 hour</div>
@@ -14,7 +17,7 @@
     <div v-if="character" class="ml-4">
       <CharacterActions :character="character" />
     </div>
-    <div v-if="add" class="flex rounded-full bg-amber-900 w-16 h-16 items-center justify-center text-center" @click="emit('create')">
+    <div v-if="add" class="flex rounded-full bg-amber-900 w-16 h-16 items-center justify-center text-center" @click="createCharacter">
       <UIcon name="i-lucide-plus" class="size-7" />
     </div>
     <div v-if="locked" class="flex rounded-full bg-amber-900 w-16 h-16 items-center justify-center text-center">
@@ -32,8 +35,20 @@ const props = defineProps<{
 }>()
 
 const { character, add, locked } = props;
-const emit = defineEmits(['create'])
+const emit = defineEmits<{
+  (e: "create"): void,
+  (e: "setSettlement", character: CharacterDTO): void
+}>()
 
+const createCharacter = () => {
+  emit("create");
+}
+
+const setSettlement = () => {
+  if (character) {
+    emit("setSettlement", character);
+  }
+}
 </script>
 
 <style></style>

@@ -30,6 +30,8 @@ model Character {
   settlement   Settlement?   @relation(fields: [settlementId], references: [id])
   settlementId String?
 
+  foundedSettlement Settlement? @relation("SettlementFounder")
+
   createdAt    DateTime      @default(now())
   lastLogIn    DateTime      @default(now())
 }
@@ -41,6 +43,10 @@ model Settlement {
   invitationCode String        @unique
   latitude       Float
   longitude      Float
+
+  founder        Character     @relation("SettlementFounder", fields: [founderId], references: [id])
+  founderId      String        @unique
+
 
   characters     Character[]
 
