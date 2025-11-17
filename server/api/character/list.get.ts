@@ -21,7 +21,8 @@ export default defineEventHandler(async (event) => {
   const charactersDTO: CharacterDTO[] = characters.map((char) => ({
     id: char.id,
     name: char.name,
-    settlementName: char.settlement?.name ?? null
+    settlementName: char.settlement?.name ?? null,
+    lastLogIn: char.lastLogIn,
   }))
 
   return charactersDTO

@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-row gap-2">
-    <UButton color="warning" @click="editCharacter">Edit</UButton>
-    <UButton color="error" @click="remove">Delete</UButton>
+    <UButton icon="i-lucide-trash" color="error" @click="remove" />
   </div>
 </template>
 
@@ -13,14 +12,6 @@ const { deleteCharacter } = useCharacter()
 const props = defineProps<{
   character: CharacterDTO
 }>()
-
-const emit = defineEmits<{
-  (e: "edit"): void
-}>()
-
-function editCharacter() {
-  emit("edit");
-}
 
 async function remove() {
   try {

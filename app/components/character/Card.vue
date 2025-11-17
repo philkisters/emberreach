@@ -11,7 +11,7 @@
       </div>
       <div class="flex flex-row justify-between">
         <div>Activity</div>
-        <div>1 hour</div>
+        <div class="ml-2">{{ calculateTimeSinceLastLogin(character.lastLogIn) }}</div>
       </div>
     </div>
     <div v-if="character" class="ml-4">
@@ -28,6 +28,9 @@
 
 <script lang="ts" setup>
 import type { CharacterDTO } from '~~/types/character';
+
+const { calculateTimeSinceLastLogin } = useCharacter();
+
 const props = defineProps<{
   character: CharacterDTO | null,
   add: boolean,
