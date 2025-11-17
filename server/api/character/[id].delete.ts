@@ -21,11 +21,46 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Character not found' })
   }
 
-  await prisma.character.delete({
-    where: {
-      id: characterId,
-    },
-  })
+  if (character.settlementId) {
+    const charactersInSettlement = await prisma.character.findMany({
+      where: {
+        settlementId: character.settlementId,
+      },
+    })
 
-  return { status: 'success' }
+    const settlement = await prisma.settlement.findUnique({
+      where: {
+        id: character.settlementId,
+      },
+    })
+
+    if (settlement && settlement.founderId === character.id && charactersInSettlement.length > 1) {
+      throw createError({ statusCode: 400, statusMessage: 'Cannot delete character who is the founder of the settlement with other characters' })
+    }
+
+    if (settlement && settlement.founderId === character.id && charactersInSettlement.length === 1) {
+      // Character is the founder and the only character in the settlement, delete settlement and character
+      await prisma.settlement.delete({
+        where: {
+          id: settlement.id,
+        },
+      })
+      await prisma.character.delete({
+        where: {
+          id: characterId,
+        },
+      })
+      return { status: 'success' }
+    }
+
+    if (settlement && settlement.founderId !== character.id && charactersInSettlement.length > 1) {
+      // There are other characters in the settlement, allow deletion
+      await prisma.character.delete({
+        where: {
+          id: characterId,
+        },
+      })
+      return { status: 'success' }
+    }
+  }
 })
