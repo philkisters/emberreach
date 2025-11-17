@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     orderBy: { lastLogIn: 'desc' },
     include: {
       settlement: {
-        select: { name: true }
+        select: { name: true, id: true}
       }
     }
   })
@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
     id: char.id,
     name: char.name,
     settlementName: char.settlement?.name ?? null,
+    settlementId: char.settlement?.id ?? null,
     lastLogIn: char.lastLogIn,
   }))
 

@@ -26,7 +26,9 @@ export default defineEventHandler(async (event) => {
   const characterDTO: CharacterDTO = {
     id: character.id,
     name: character.name,
-    settlementName: null
+    settlementName: null,
+    settlementId: null,
+    lastLogIn: character.lastLogIn,
   }
 
   return characterDTO

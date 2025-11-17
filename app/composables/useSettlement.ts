@@ -2,6 +2,7 @@ import type { SettlementDTO } from "~~/types/settlement"
 
 export const useSettlement = () => {
   const settlements = useState<SettlementDTO[]>('settlements', () => [])
+  const activeSettlement = useState<SettlementDTO | null>('activeSettlement', () => null)
   
   const createSettlement = async (name: string, latitude: number, longitude: number, founderId: string) => {
     try {
@@ -23,5 +24,14 @@ export const useSettlement = () => {
     }
   }
 
-  return { settlements, createSettlement }
+  const loadActiveSettlement = async (settlementId: string) => {
+    try {
+      const settlement = await $fetch<SettlementDTO>(`/api/settlement/${settlementId}`)
+      activeSettlement.value = settlement
+    } catch (error) {
+      console.error("Error loading active settlement:", error)
+    }
+  }
+
+  return { settlements, createSettlement, loadActiveSettlement, activeSettlement }
 }
